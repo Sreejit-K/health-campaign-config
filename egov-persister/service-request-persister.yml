@@ -148,10 +148,9 @@ serviceMaps:
               type: JSON
               dbType: JSONB
 
-
     - version: 1.0
       description: Update Service Definition 
-      fromTopic: update-service-definition
+      fromTopic: update-service-definition-health
       isTransaction: true
       queryMaps:
 
