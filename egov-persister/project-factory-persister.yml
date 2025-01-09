@@ -173,6 +173,12 @@ serviceMaps:
       description: Update campaign details in the eg_cm_campaign_details table
       fromTopic: update-project-campaign-details
       isTransaction: true
+      isAuditEnabled: true
+      module: HCM
+      objecIdJsonPath: $.id
+      tenantIdJsonPath: $.tenantId
+      transactionCodeJsonPath: $.campaignNumber
+      auditAttributeBasePath: $.CampaignDetails
       queryMaps:
         - query: UPDATE eg_cm_campaign_details SET campaignName = ?, "status" = ?, action = ?, projectType = ?, hierarchyType = ?, boundaryCode = ?, projectId = ?, parentId = ?, isActive = ?, startDate=?,endDate=?, lastModifiedBy = ?, lastModifiedTime = ?, additionalDetails = ?, campaignDetails = ? WHERE id = ?;
           basePath: $.CampaignDetails
