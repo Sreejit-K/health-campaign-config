@@ -13,7 +13,7 @@ serviceMaps:
       transactionCodeJsonPath: $.musterRollNumber
       auditAttributeBasePath: $.musterRoll
       queryMaps:
-         - query: INSERT INTO health.eg_wms_muster_roll(id,tenant_id,musterroll_number,attendance_register_id,start_date,end_date,musterroll_status,status,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime,reference_id,service_code) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+         - query: INSERT INTO eg_wms_muster_roll(id,tenant_id,musterroll_number,attendance_register_id,start_date,end_date,musterroll_status,status,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime,reference_id,service_code) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
            basePath: $.musterRoll
            jsonMaps:
              - jsonPath: $.musterRoll.id
@@ -48,7 +48,7 @@ serviceMaps:
 
              - jsonPath: $.musterRoll.serviceCode
 
-         - query: INSERT INTO health.eg_wms_attendance_summary(id,individual_id,muster_roll_id,musterroll_number,actual_total_attendance,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime,modified_total_attendance) VALUES(?,?,?,?,?,?,?,?,?,?,?);
+         - query: INSERT INTO eg_wms_attendance_summary(id,individual_id,muster_roll_id,musterroll_number,actual_total_attendance,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime,modified_total_attendance) VALUES(?,?,?,?,?,?,?,?,?,?,?);
            basePath: $.musterRoll.individualEntries.*
            jsonMaps:
 
@@ -76,7 +76,7 @@ serviceMaps:
 
              - jsonPath: $.musterRoll.individualEntries.*.modifiedTotalAttendance
 
-         - query: INSERT INTO health.eg_wms_attendance_entries(id,attendance_summary_id,individual_id,musterroll_number,date_of_attendance,attendance_value,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime) VALUES(?,?,?,?,?,?,?,?,?,?,?);
+         - query: INSERT INTO eg_wms_attendance_entries(id,attendance_summary_id,individual_id,musterroll_number,date_of_attendance,attendance_value,additionaldetails,createdby,lastmodifiedby,createdtime,lastmodifiedtime) VALUES(?,?,?,?,?,?,?,?,?,?,?);
            basePath: $.musterRoll.individualEntries.*.attendanceEntries.*
            jsonMaps:
 
@@ -115,7 +115,7 @@ serviceMaps:
       transactionCodeJsonPath: $.id
       auditAttributeBasePath: $.musterRoll
       queryMaps:
-         - query: UPDATE health.eg_wms_muster_roll SET musterroll_status=?, status=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
+         - query: UPDATE eg_wms_muster_roll SET musterroll_status=?, status=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
            basePath: $.musterRoll
            jsonMaps:
 
@@ -133,7 +133,7 @@ serviceMaps:
 
              - jsonPath: $.musterRoll.id
 
-         - query: UPDATE health.eg_wms_attendance_summary SET actual_total_attendance=?, modified_total_attendance=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
+         - query: UPDATE eg_wms_attendance_summary SET actual_total_attendance=?, modified_total_attendance=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
            basePath: $.musterRoll.individualEntries.*
            jsonMaps:
 
@@ -152,7 +152,7 @@ serviceMaps:
              - jsonPath: $.musterRoll.individualEntries.*.id
 
 
-         - query: UPDATE health.eg_wms_attendance_entries SET attendance_value=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
+         - query: UPDATE eg_wms_attendance_entries SET attendance_value=?, additionaldetails=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=?;
            basePath: $.musterRoll.individualEntries.*.attendanceEntries.*
            jsonMaps:
 
