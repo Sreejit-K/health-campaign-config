@@ -12,7 +12,7 @@ serviceMaps:
    transactionCodeJsonPath: $.billNumber
    auditAttributeBasePath: $.bill
    queryMaps: 
-    - query: INSERT into health.eg_expense_bill (id, tenantid, localitycode, billdate, duedate, billnumber, totalamount, totalPaidAmount, businessservice, referenceId, fromperiod, toperiod, status, paymentStatus, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    - query: INSERT into eg_expense_bill (id, tenantid, localitycode, billdate, duedate, billnumber, totalamount, totalPaidAmount, businessservice, referenceId, fromperiod, toperiod, status, paymentStatus, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       basePath: $.bill
       jsonMaps:
        
@@ -58,7 +58,7 @@ serviceMaps:
 
 
     # insert into party from payer of bill
-    - query: INSERT into health.eg_expense_party (id, tenantid, type, identifier, parentId, status, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?)
+    - query: INSERT into eg_expense_party (id, tenantid, type, identifier, parentId, status, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?)
       basePath: $.bill.payer
       jsonMaps:
        
@@ -83,7 +83,7 @@ serviceMaps:
        - jsonPath: $.bill.payer.auditDetails.lastModifiedTime
 
 
-    - query: INSERT into health.eg_expense_billdetail (id, tenantid, billid, referenceId, totalAmount, totalPaidAmount, status, paymentStatus, fromperiod, toperiod, createdby, createdTime, lastModifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+    - query: INSERT into eg_expense_billdetail (id, tenantid, billid, referenceId, totalAmount, totalPaidAmount, status, paymentStatus, fromperiod, toperiod, createdby, createdTime, lastModifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
       basePath: $.bill.billDetails.*
       jsonMaps:
        - jsonPath: $.bill.billDetails.*.id
@@ -119,7 +119,7 @@ serviceMaps:
          dbType: JSONB
 
     # insert into party from payee of bill details
-    - query: INSERT into health.eg_expense_party (id, tenantid, type, identifier, parentId, status, additionalDetails, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?,?)
+    - query: INSERT into eg_expense_party (id, tenantid, type, identifier, parentId, status, additionalDetails, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?,?)
       basePath: $.bill.billDetails.*.payee
       jsonMaps:
        
@@ -148,7 +148,7 @@ serviceMaps:
        - jsonPath: $.bill.billDetails.*.payee.auditDetails.lastModifiedTime
                 
 
-    - query: INSERT into health.eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,false,?,?,?,?,?);
+    - query: INSERT into eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,false,?,?,?,?,?);
       basePath: $.bill.billDetails.*.lineItems.*
       jsonMaps:
        - jsonPath: $.bill.billDetails.*.lineItems.*.id
@@ -181,7 +181,7 @@ serviceMaps:
          type: JSON
          dbType: JSONB
          
-    - query: INSERT into health.eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus,islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,true,?,?,?,?,?);
+    - query: INSERT into eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus,islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,true,?,?,?,?,?);
       basePath: $.bill.billDetails.*.payableLineItems.*
       jsonMaps:
        - jsonPath: $.bill.billDetails.*.payableLineItems.*.id
@@ -226,7 +226,7 @@ serviceMaps:
    transactionCodeJsonPath: $.billNumber
    auditAttributeBasePath: $.bill
    queryMaps: 
-    - query: UPDATE health.eg_expense_bill SET billdate=?, duedate=?, totalAmount=?, totalPaidAmount=?, businessservice=?, referenceid=?, fromperiod=?, toperiod=?, status=?, paymentstatus=?, lastmodifiedby=?, lastmodifiedtime=?, additionaldetails=? WHERE id=? AND tenantid=?;
+    - query: UPDATE eg_expense_bill SET billdate=?, duedate=?, totalAmount=?, totalPaidAmount=?, businessservice=?, referenceid=?, fromperiod=?, toperiod=?, status=?, paymentstatus=?, lastmodifiedby=?, lastmodifiedtime=?, additionaldetails=? WHERE id=? AND tenantid=?;
       basePath: $.bill
       jsonMaps:
          
@@ -263,7 +263,7 @@ serviceMaps:
        - jsonPath: $.bill.tenantId
 
     # update to party from payer of bill
-    - query: UPDATE health.eg_expense_party SET type=?, identifier=?, parentid=?, status=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=? AND tenantid=?;
+    - query: UPDATE eg_expense_party SET type=?, identifier=?, parentid=?, status=?, lastmodifiedby=?, lastmodifiedtime=? WHERE id=? AND tenantid=?;
       basePath: $.bill
       jsonMaps:
          
@@ -283,7 +283,7 @@ serviceMaps:
 
        - jsonPath: $.bill.tenantId
 
-    - query: INSERT into health.eg_expense_billdetail (id, tenantid, billid, totalamount, totalpaidamount, status, referenceId, paymentStatus, fromperiod, toperiod, createdby, createdTime, lastModifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id, tenantid)  DO UPDATE SET referenceid=EXCLUDED.referenceid, paymentstatus=EXCLUDED.paymentstatus, status=EXCLUDED.status, totalamount=EXCLUDED.totalamount, totalpaidamount=EXCLUDED.totalpaidamount, fromperiod=EXCLUDED.fromperiod, toperiod=EXCLUDED.toperiod, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
+    - query: INSERT into eg_expense_billdetail (id, tenantid, billid, totalamount, totalpaidamount, status, referenceId, paymentStatus, fromperiod, toperiod, createdby, createdTime, lastModifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id, tenantid)  DO UPDATE SET referenceid=EXCLUDED.referenceid, paymentstatus=EXCLUDED.paymentstatus, status=EXCLUDED.status, totalamount=EXCLUDED.totalamount, totalpaidamount=EXCLUDED.totalpaidamount, fromperiod=EXCLUDED.fromperiod, toperiod=EXCLUDED.toperiod, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
       basePath: $.bill.billDetails.*
       jsonMaps:
        - jsonPath: $.bill.billDetails.*.id
@@ -319,7 +319,7 @@ serviceMaps:
          dbType: JSONB
 
     # update party from payee of bill details
-    - query: INSERT into health.eg_expense_party (id, tenantid, type, identifier, parentId, status, additionalDetails, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT (id, tenantid) DO UPDATE SET type=EXCLUDED.type, identifier=EXCLUDED.identifier, parentid=EXCLUDED.parentid, status=EXCLUDED.status, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails
+    - query: INSERT into eg_expense_party (id, tenantid, type, identifier, parentId, status, additionalDetails, createdby, createdTime, lastmodifiedby, lastModifiedTime) values(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT (id, tenantid) DO UPDATE SET type=EXCLUDED.type, identifier=EXCLUDED.identifier, parentid=EXCLUDED.parentid, status=EXCLUDED.status, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails
       basePath: $.bill.billDetails.*.payee
       jsonMaps:
        
@@ -348,7 +348,7 @@ serviceMaps:
        - jsonPath: $.bill.billDetails.*.payee.auditDetails.lastModifiedTime
         
        
-    - query: INSERT into health.eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,false,?,?,?,?,?) ON CONFLICT (id,tenantid) DO UPDATE SET headcode=EXCLUDED.headcode, amount=EXCLUDED.amount, paidamount=EXCLUDED.paidamount, type=EXCLUDED.type, status=EXCLUDED.status, islineitempayable=EXCLUDED.islineitempayable, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
+    - query: INSERT into eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,false,?,?,?,?,?) ON CONFLICT (id,tenantid) DO UPDATE SET headcode=EXCLUDED.headcode, amount=EXCLUDED.amount, paidamount=EXCLUDED.paidamount, type=EXCLUDED.type, status=EXCLUDED.status, islineitempayable=EXCLUDED.islineitempayable, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
       basePath: $.bill.billDetails.*.lineItems.*
       jsonMaps:
 
@@ -380,7 +380,7 @@ serviceMaps:
          type: JSON
          dbType: JSONB
          
-    - query: INSERT into health.eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,true,?,?,?,?,?) ON CONFLICT (id,tenantid) DO UPDATE SET headcode=EXCLUDED.headcode, amount=EXCLUDED.amount, paidamount=EXCLUDED.paidamount, type=EXCLUDED.type, status=EXCLUDED.status, paymentStatus=EXCLUDED.paymentStatus, islineitempayable=EXCLUDED.islineitempayable, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
+    - query: INSERT into eg_expense_lineitem (id, tenantid, billDetailId, headCode, amount, paidAmount, type, status, paymentStatus, islineitempayable, createdby, createdTime, lastmodifiedby, lastModifiedTime, additionalDetails) values(?,?,?,?,?,?,?,?,?,true,?,?,?,?,?) ON CONFLICT (id,tenantid) DO UPDATE SET headcode=EXCLUDED.headcode, amount=EXCLUDED.amount, paidamount=EXCLUDED.paidamount, type=EXCLUDED.type, status=EXCLUDED.status, paymentStatus=EXCLUDED.paymentStatus, islineitempayable=EXCLUDED.islineitempayable, lastmodifiedby=EXCLUDED.lastmodifiedby, lastmodifiedtime=EXCLUDED.lastmodifiedtime, additionaldetails=EXCLUDED.additionaldetails;
       basePath: $.bill.billDetails.*.payableLineItems.*
       jsonMaps:
 
